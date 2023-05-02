@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from "react";
 
-function App() {
+export default function App() {
+  const [text, setText] = useState("");
+  const [list, setList] = useState(["aa", "bb", "cc"]);
+
+  const handleChange = (e) => {
+    // console.log(e.target.value);
+
+    setText(e.target.value);
+  };
+
+  const handleClick = () => {
+    if (text.trim().length !== 0) setList([...list, text]);
+  };
+
+  const handleDelete = (index) => {
+    let newList = [...list];
+    //dont get it splice
+    newList.splice(index, 1);
+    setList(newList);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input onChange={handleChange}></input>
+      <button onClick={handleClick}>confirm</button>
+      {list.map((v, i) => {
+        return (
+          <div key={i}>
+            <li>{v}</li>
+            <button onClick={() => handleDelete(i)}>delete</button>
+          </div>
+        );
+      })}
+      {!list.length && <p>No tasks to do</p>}
     </div>
   );
 }
-
-export default App;
