@@ -1,39 +1,52 @@
-import {useState} from "react";
+import React, {Component} from "react";
 
-export default function App() {
-  const [text, setText] = useState("");
-  const [list, setList] = useState(["aa", "bb", "cc"]);
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: "xiaoming",
+      list: ["happy", "double happy", "triple happy"],
+      searchField: "",
+    };
+  }
+  handleChange = (e) => {
+    console.log(e.target.value);
 
-  const handleChange = (e) => {
-    // console.log(e.target.value);
+    let searchField = e.target.value.toLocaleLowerCase();
 
-    setText(e.target.value);
+    // const newList = [...initialList, filterList];
+
+    this.setState(() => {
+      return {searchField};
+    });
   };
 
-  const handleClick = () => {
-    if (text.trim().length !== 0) setList([...list, text]);
+  handleClick = () => {
+    this.setState({name: "hahahahahahhahahahah"});
   };
 
-  const handleDelete = (index) => {
-    let newList = [...list];
-    //dont get it splice
-    newList.splice(index, 1);
-    setList(newList);
-  };
+  render() {
+    const {name, searchField} = this.state;
+    const searchList = this.state.list.filter((v) => {
+      return v.toLocaleLowerCase().includes(searchField);
+    });
 
-  return (
-    <div>
-      <input onChange={handleChange}></input>
-      <button onClick={handleClick}>confirm</button>
-      {list.map((v, i) => {
-        return (
-          <div key={i}>
-            <li>{v}</li>
-            <button onClick={() => handleDelete(i)}>delete</button>
-          </div>
-        );
-      })}
-      {!list.length && <p>No tasks to do</p>}
-    </div>
-  );
+    return (
+      <div>
+        <p>{name}</p>
+        <button onClick={this.handleClick}>Click me</button>
+        <br></br>
+        <input
+          className="search-box"
+          type="search"
+          placeholder="search it"
+          onChange={this.handleChange}
+        ></input>
+        <button>Search</button>
+        {searchList.map((v, i) => {
+          return <li key={i}>{v}</li>;
+        })}
+      </div>
+    );
+  }
 }
